@@ -317,10 +317,9 @@ def generate(prompt, max_new=20):                                               
         next_token = torch.argmax(logits[:, -1, :], dim=-1, keepdim=True)       # dim=-1 finds max across vocab, keepdim=True keeps shape as (1, 1)
         ids = torch.cat([ids, next_token], dim=1)                               # Concatenates predicted token ID onto existing sequence ids along sequence dimension (dim=1), extending context length by 1.
 
-    # for word-level vocabulary (adds spaces between words)
     return " ".join(itos[i.item()] for i in ids[0])                             # Converts tensor of generated token IDs back to strings using itos dictionary and joins them with spaces.
 
 
-prompt = "Ovšem "
+prompt = "šílenství"
 print("\nSample output:", generate(prompt))                                    # Calls text generation with seed prompt and prints output string.
 logit_lens(model, prompt)
