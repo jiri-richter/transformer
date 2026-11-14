@@ -252,20 +252,20 @@ class BPE:
 
 
 # BPE slovník & dataset preparation
-torch.manual_seed(0)
+# torch.manual_seed(0)
 
-with open("corpus_words.txt", "r", encoding="utf-8") as f:
-    corpus = f.read() + " "
+# with open("corpus_words.txt", "r", encoding="utf-8") as f:
+#     corpus = f.read() + " "
 
-corpus = corpus.lower()
+# corpus = corpus.lower()
 
-bpe = BPE(vocab_size=BPE_VOCAB_SIZE)
-bpe.train(corpus)
-bpe.save("bpe_tokenizer_1024.pt")
+# bpe = BPE(vocab_size=BPE_VOCAB_SIZE)
+# bpe.train(corpus)
+# bpe.save("bpe_tokenizer_1024.pt")
 
-VOCAB = len(bpe.vocab)
-data = torch.tensor(bpe.encode(corpus), dtype=torch.long, device=device)
-print(f"VOCAB: {VOCAB} | Total BPE tokens: {len(data):,}")
+# VOCAB = len(bpe.vocab)
+# data = torch.tensor(bpe.encode(corpus), dtype=torch.long, device=device)
+# print(f"VOCAB: {VOCAB} | Total BPE tokens: {len(data):,}")
 
 # Verify consistent subword splits regardless of surrounding whitespace
 bpe = BPE.load("bpe_tokenizer_1024.pt")
@@ -274,6 +274,9 @@ for sample in ["šílenství", " šílenství", "šílenství ", " šílenství 
     pieces = [bpe.vocab[i].decode("utf-8", errors="replace") for i in ids]
     print(f"{repr(sample):<15} -> {ids} -> {pieces}")
 
+VOCAB = len(bpe.vocab)
+data = torch.tensor(bpe.encode(corpus), dtype=torch.long, device=device)
+print(f"VOCAB: {VOCAB} | Total BPE tokens: {len(data):,}")
 
 # Checkpoint save/load helpers
 def save_checkpoint(path, model, opt, bpe, step, loss_val):
