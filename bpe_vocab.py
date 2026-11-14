@@ -438,6 +438,5 @@ def run(prompt="Třetí den ráno byla půda natolik suchá,", max_new=120):
         print()
 
 
-# Run live during the lecture (loads all 3 checkpoints from disk in milliseconds)
 run(prompt="Třetí den ráno byla půda natolik suchá,", max_new=120)
 run(prompt="hluboko pod ledem jsme spatřili podivné", max_new=120)
