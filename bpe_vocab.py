@@ -327,28 +327,28 @@ model = MiniGPT().to(device)
 opt = torch.optim.AdamW(model.parameters(), lr=3e-4)
 
 
-def get_batch():
-    BATCH = 64
-    B, T = BATCH, SEQ_LEN
-    ix = torch.randint(len(data) - T, (B,), device=device)
-    idx = ix.unsqueeze(1) + torch.arange(T, device=device)
-    return data[idx], data[idx + 1]
+# def get_batch():
+#     BATCH = 64
+#     B, T = BATCH, SEQ_LEN
+#     ix = torch.randint(len(data) - T, (B,), device=device)
+#     idx = ix.unsqueeze(1) + torch.arange(T, device=device)
+#     return data[idx], data[idx + 1]
 
 
-epochs = max(CHECKPOINT_STEPS) + 1
-for step in range(epochs):
-    x, y = get_batch()
-    _, loss = model(x, y)
-    opt.zero_grad()
-    loss.backward()
-    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-    opt.step()
+# epochs = max(CHECKPOINT_STEPS) + 1
+# for step in range(epochs):
+#     x, y = get_batch()
+#     _, loss = model(x, y)
+#     opt.zero_grad()
+#     loss.backward()
+#     torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+#     opt.step()
 
-    if step % 100 == 0:
-        print(f"step {step:4d}  loss {loss.item():.4f}")
+#     if step % 100 == 0:
+#         print(f"step {step:4d}  loss {loss.item():.4f}")
 
-    if step in CHECKPOINT_STEPS:
-        save_checkpoint(CHECKPOINT_STEPS[step], model, opt, bpe, step, loss.item())
+#     if step in CHECKPOINT_STEPS:
+#         save_checkpoint(CHECKPOINT_STEPS[step], model, opt, bpe, step, loss.item())
 
 
 # Inference & Logit Lens
@@ -418,7 +418,7 @@ def generate(model, bpe, prompt, max_new=150, seq_len=SEQ_LEN, temperature=0.7, 
     return bpe.decode(ids[0].tolist()).lstrip()
 
 
-def run_lecture_demo(prompt="Třetí den ráno byla půda natolik suchá,", max_new=120):
+def run(prompt="Třetí den ráno byla půda natolik suchá,", max_new=120):
     stages = [
         ("1. UNDERFITTED", "ckpt_1_underfit.pt"),
         ("2. SWEET SPOT",  "ckpt_2_sweetspot.pt"),
@@ -439,5 +439,5 @@ def run_lecture_demo(prompt="Třetí den ráno byla půda natolik suchá,", max_
 
 
 # Run live during the lecture (loads all 3 checkpoints from disk in milliseconds)
-run_lecture_demo(prompt="Třetí den ráno byla půda natolik suchá,", max_new=120)
-run_lecture_demo(prompt="hluboko pod ledem jsme spatřili podivné", max_new=120)
+run(prompt="Třetí den ráno byla půda natolik suchá,", max_new=120)
+run(prompt="hluboko pod ledem jsme spatřili podivné", max_new=120)
