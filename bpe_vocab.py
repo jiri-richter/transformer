@@ -268,7 +268,7 @@ class BPE:
 # print(f"VOCAB: {VOCAB} | Total BPE tokens: {len(data):,}")
 
 # Verify consistent subword splits regardless of surrounding whitespace
-bpe = BPE.load("bpe_tokenizer_1024.pt")
+bpe = BPE.load("bpe_vocab.pt")
 for sample in ["šílenství", " šílenství", "šílenství ", " šílenství "]:
     ids = bpe.encode(sample)
     pieces = [bpe.vocab[i].decode("utf-8", errors="replace") for i in ids]
